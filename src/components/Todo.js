@@ -18,7 +18,7 @@ const todo = props => {
         }
         setTodoList(todos);
       });
-  });
+  }, []);
 
   const inputChangeHandler = event => {
     // setTodoState({
