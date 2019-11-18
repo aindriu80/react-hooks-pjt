@@ -84,6 +84,17 @@ const todo = props => {
       });
   };
 
+  const todoRemoveHandler = todoId => {
+    axios
+      .delete(`https://react-hooks-pjt.firebaseio.com/todos/${todoId}.json`)
+      .then(res => {
+        dispatch({ type: 'REMOVE', payload: todoId });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   return (
     <React.Fragment>
       <input
@@ -97,7 +108,9 @@ const todo = props => {
       </button>
       <ul>
         {todoList.map(todo => (
-          <li key={todo.id}>{todo.name}</li>
+          <li key={todo.id} onClick={todoRemoveHandler.bind(this, todo.id)}>
+            {todo.name}
+          </li>
         ))}
       </ul>
     </React.Fragment>
