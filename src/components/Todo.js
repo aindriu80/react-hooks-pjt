@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import axios from 'axios';
 
 const todo = props => {
-  const [todoName, setTodoName] = useState('');
+  // const [todoName, setTodoName] = useState('');
   // const [submittedTodo, setSubmittedTodo] = useState(null);
   // const [todoList, setTodoList] = useState([]);
   // const [todoState, setTodoState] = useState({ userInput: '', todoList: [] });
+  const todoInputRef = useRef();
 
   const todoListReducer = (state, action) => {
     switch (action.type) {
@@ -37,7 +38,7 @@ const todo = props => {
     return () => {
       console.log('Cleanup');
     };
-  }, [todoName]);
+  }, []);
 
   const mouseMoveHandler = event => {
     console.log(event.clientX, event.clientY);
@@ -56,19 +57,21 @@ const todo = props => {
   //   }
   // }, [submittedTodo]);
 
-  const inputChangeHandler = event => {
-    // setTodoState({
-    //   userInput: event.target.value,
-    //   todoList: todoState.todoList
-    // });
-    setTodoName(event.target.value);
-  };
+  // const inputChangeHandler = event => {
+  //   // setTodoState({
+  //   //   userInput: event.target.value,
+  //   //   todoList: todoState.todoList
+  //   // });
+  //   setTodoName(event.target.value);
+  // };
 
   const todoAddHandler = () => {
     // setTodoState({
     //   userInput: todoState.userInput,
     //   todoList: todoState.todoList.concat(todoState.userInput)
     // });
+
+    const todoName = todoInputRef.current.value;
 
     axios
       .post('https://react-hooks-pjt.firebaseio.com/todos.json', {
@@ -98,12 +101,7 @@ const todo = props => {
 
   return (
     <React.Fragment>
-      <input
-        type="text"
-        placeholder="Todo"
-        onChange={inputChangeHandler}
-        value={todoName.userInput}
-      />
+      <input type="text" placeholder="Todo" ref={todoInputRef} />
       <button type="button" onClick={todoAddHandler}>
         Add
       </button>
