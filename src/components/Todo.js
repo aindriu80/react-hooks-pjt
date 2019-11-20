@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useRef } from 'react';
+import React, { useState, useEffect, useReducer, useRef, useMemo } from 'react';
 import axios from 'axios';
 import List from './List';
 
@@ -46,14 +46,13 @@ const todo = props => {
     console.log(event.clientX, event.clientY);
   };
 
-
   const inputValidationHandler = event => {
-    if (event.target.value.trim() === ''){
+    if (event.target.value.trim() === '') {
       setInputIsValid(false);
-    }else{
+    } else {
       setInputIsValid(true);
     }
-  }
+  };
 
   // useEffect(() => {
   //   document.addEventListener('mousemove', mouseMoveHandler);
@@ -112,11 +111,22 @@ const todo = props => {
 
   return (
     <React.Fragment>
-      <input type="text" placeholder="Todo" ref={todoInputRef} onChange={inputValidationHandler} style={{backgroundColor: inputIsValid ? 'transparent' : 'red'}} />
+      <input
+        type="text"
+        placeholder="Todo"
+        ref={todoInputRef}
+        onChange={inputValidationHandler}
+        style={{ backgroundColor: inputIsValid ? 'transparent' : 'red' }}
+      />
       <button type="button" onClick={todoAddHandler}>
         Add
       </button>
-      <List items={todoList} onClick={todoRemoveHandler} />
+      {useMemo(
+        () => (
+          <List items={todoList} onClick={todoRemoveHandler} />
+        ),
+        [todoList]
+      )}
     </React.Fragment>
   );
 };
